@@ -16,7 +16,7 @@
 
 #define REMOTE_OFFLINE_CNT_MAX  50          //遥控器失联计数上限
 /*摇杆最大值*/
-#define RC_CNT_MAX							(660.f)
+#define RC_CNT_MAX							(500.f)
 
 
 

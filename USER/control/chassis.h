@@ -5,7 +5,7 @@
 #include "main.h"
 #include "config.h"
 /* Exported macro ------------------------------------------------------------*/
-#define CHASSIS_MAX_SPEED						(0.9*CHASSIS_MAX_OUTPUT_SPEED)
+#define CHASSIS_MAX_SPEED						(1*CHASSIS_MAX_OUTPUT_SPEED)
 #define CHASSIS_MAX_OUTPUT_SPEED    (1000.f)
 
 /** 

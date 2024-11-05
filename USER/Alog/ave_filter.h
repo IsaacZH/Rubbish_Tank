@@ -9,7 +9,7 @@
 #ifndef __AVE_FILTER_H
 #define __AVE_FILTER_H
 
-#include "stm32f4xx_hal.h"
+#include "main.h"
 
 #define ave_filter_times_max 10
 

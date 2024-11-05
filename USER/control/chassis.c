@@ -46,7 +46,7 @@ void Chassis_Mec_Update(chassis_t *chassis)
 	}
 	else
 	{
-		chassis->base_info.target_front_speed = (float) rc.base_info->ch3 / RC_CNT_MAX * CHASSIS_MAX_SPEED;
+		chassis->base_info.target_front_speed = (float) rc.base_info->ch1 / RC_CNT_MAX * CHASSIS_MAX_SPEED;
 	}
 	chassis->base_info.target_cycle_speed = (float) rc.base_info->ch0 / RC_CNT_MAX * CHASSIS_MAX_SPEED;
 }
@@ -84,7 +84,7 @@ void Chassis_Speed_Calculating(chassis_t *chassis)
 	cycle *= K;
 	
 	chassis->base_info.target_chassis_L   =   front + cycle; 
-	chassis->base_info.target_chassis_R   = - front + cycle; 
+	chassis->base_info.target_chassis_R   =   -front + cycle; 
 	
 }
 
@@ -146,14 +146,14 @@ void Chassis_Work(chassis_t *chassis)
 	if (!RC_ONLINE)
 	{
 		//卸力
-		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_SET);
 	}
 	else
 	{
 		//上电
-		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_SET);
-		HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_RESET);
 		//右侧转向
 		if (chassis->base_info.target_chassis_R > 0)
 		{
