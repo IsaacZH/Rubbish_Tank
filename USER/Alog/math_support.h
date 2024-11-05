@@ -10,7 +10,7 @@
 #ifndef __MATH_SUPPORT_H
 #define __MATH_SUPPORT_H
 
-#include "stm32f4xx_hal.h"
+#include "main.h"
 #include "math.h"
 
 #define abs(x) ((x)>0? (x):(-(x)))

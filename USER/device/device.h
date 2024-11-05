@@ -1,50 +1,50 @@
-/**
-  ******************************************************************************
-  * @file           : device.c/h
-  * @brief          : 
-  * @note           :  
-  ******************************************************************************
-  */
-#ifndef __DEVICE_H
-#define __DEVICE_H
+// /**
+//   ******************************************************************************
+//   * @file           : device.c/h
+//   * @brief          : 
+//   * @note           :  
+//   ******************************************************************************
+//   */
+// #ifndef __DEVICE_H
+// #define __DEVICE_H
 
-#include "config.h"
-#include "motor.h"   
-#include "gimbal_motor.h"
-#include "shooting_motor.h"
-#include "image_motor.h"
-#include "remote.h"
-#include "imu_sensor.h"
+// #include "config.h"
 
-
-typedef enum{
-	DEVICE_01,
-	DEVICE_02,
-	DEVICE_03,
-	DEVICE_04,
-	DEVICE_05,
-	DEVICE_06,
-	DEVICE_07,
-	DEVICE_08,
-	DEVICE_09,
-	DEVICE_10,
-	DEVICE_11,
-	DEVICE_12,
-	DEVICE_CNT
-}device_cnt_e;
+// #include "gimbal_motor.h"
+// #include "shooting_motor.h"
+// #include "image_motor.h"
+// #include "remote.h"
+// #include "imu_sensor.h"
 
 
-typedef struct{
-	motor_t						*motor;
-	motor_state_e   	work_sate;
-}device_t;
+// typedef enum{
+// 	DEVICE_01,
+// 	DEVICE_02,
+// 	DEVICE_03,
+// 	DEVICE_04,
+// 	DEVICE_05,
+// 	DEVICE_06,
+// 	DEVICE_07,
+// 	DEVICE_08,
+// 	DEVICE_09,
+// 	DEVICE_10,
+// 	DEVICE_11,
+// 	DEVICE_12,
+// 	DEVICE_CNT
+// }device_cnt_e;
 
 
-extern device_t device[DEVICE_CNT];
+// typedef struct{
+// 	motor_t						*motor;
+// 	motor_state_e   	work_sate;
+// }device_t;
 
-void Device_Init(void);
-void Device_HeartBeat(void);
-void Device_Work(void);
+
+// extern device_t device[DEVICE_CNT];
+
+// void Device_Init(void);
+// void Device_HeartBeat(void);
+// void Device_Work(void);
 
 
-#endif
+// #endif

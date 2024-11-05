@@ -1,7 +1,7 @@
 #ifndef __MY_MATH_H
 #define __MY_MATH_H
 
-#include "stm32f4xx_hal.h"
+#include "main.h"
 #include "math_support.h"
 
 /* ÊýÖµº¯Êý */

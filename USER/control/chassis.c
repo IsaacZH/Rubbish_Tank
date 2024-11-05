@@ -10,8 +10,9 @@
 #include "device.h"
 #include "rp_math.h"
 #include "car.h"
-#include "communicate_protocol.h"
-
+#include "remote.h"
+#include "gpio.h"
+#include "drv_tim.h"
 /* Private function prototypes -----------------------------------------------*/
 
 void Chassis_Speed_Calculating(chassis_t *chassis);//麦轮底盘电机目标速度解算
@@ -37,9 +38,8 @@ chassis_t chassis =
  * @param ctrl_move 0:遥控器模式 1：键盘模式
  * @note ch3:左遥感Y轴 ch2:左遥感X轴 ch0:右遥感X轴
  */
-void Chassis_Mec_Update(chassis_t *chassis,uint8_t ctrl_mode)
+void Chassis_Mec_Update(chassis_t *chassis)
 {
-
 	if(chassis->move_dir == sideways_on)
 	{
 		chassis->base_info.target_front_speed = -(float) rc.base_info->ch2 / RC_CNT_MAX * CHASSIS_MAX_SPEED;
@@ -50,7 +50,6 @@ void Chassis_Mec_Update(chassis_t *chassis,uint8_t ctrl_mode)
 		chassis->base_info.target_front_speed = (float) rc.base_info->ch3 / RC_CNT_MAX * CHASSIS_MAX_SPEED;
 	}
 	chassis->base_info.target_cycle_speed = (float) rc.base_info->ch0 / RC_CNT_MAX * CHASSIS_MAX_SPEED;
-
 }
 
 
@@ -85,8 +84,8 @@ void Chassis_Speed_Calculating(chassis_t *chassis)
 	front *= K;
 	cycle *= K;
 	
-	chassis->base_info.target_chassisLF   =   front + cycle; 
-	chassis->base_info.target_chassisRB   = - front + cycle; 
+	chassis->base_info.target_chassis_L   =   front + cycle; 
+	chassis->base_info.target_chassis_R   = - front + cycle; 
 	
 }
 
@@ -101,7 +100,7 @@ void Chassis_Speed_Calculating(chassis_t *chassis)
 **/
 void Chassis_Work_Mec(chassis_t *chassis)
 {
-	Chassis_Mec_Update(chassis,car.car_ctrl_mode);//底盘机械模式更新
+	Chassis_Mec_Update(chassis);//底盘机械模式更新
 	Chassis_Speed_Calculating(chassis);//麦轮底盘电机目标速度解算
 }
 
@@ -158,12 +157,46 @@ void Chassis_Work(chassis_t *chassis)
 //			
 //		default:
 //			break;
+//	}
 	
-		Chassis_Work_Mec(chassis);
-		
+	Chassis_Work_Mec(chassis);
+	//关控保护
+	if (!RC_ONLINE)
+	{
+		//卸力
+		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_RESET);
+	}
+	else
+	{
+		//上电
+		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port,EN1_Pin,GPIO_PIN_SET);
+		//右侧转向
+		if (chassis->base_info.target_chassis_R > 0)
+		{
+			HAL_GPIO_WritePin(DIR1_GPIO_Port,DIR1_Pin,GPIO_PIN_SET);
+		}
+		else
+		{
+			HAL_GPIO_WritePin(DIR1_GPIO_Port,DIR1_Pin,GPIO_PIN_RESET);
+		}
+		//左侧转向
+		if (chassis->base_info.target_chassis_L > 0)
+		{
+			HAL_GPIO_WritePin(DIR2_GPIO_Port,DIR2_Pin,GPIO_PIN_SET);
+		}
+		else
+		{
+			HAL_GPIO_WritePin(DIR2_GPIO_Port,DIR2_Pin,GPIO_PIN_RESET);
+		}
+		//转速控制
+		float l_duty = abs(chassis->base_info.target_chassis_L) / CHASSIS_MAX_SPEED;
 		
 	}
 
 
-
+	
+		
+		
 }
