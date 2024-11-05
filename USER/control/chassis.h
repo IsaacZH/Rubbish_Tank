@@ -5,7 +5,8 @@
 #include "main.h"
 #include "config.h"
 /* Exported macro ------------------------------------------------------------*/
-#define CHASSIS_MAX_SPEED						(10000.f) //6000
+#define CHASSIS_MAX_SPEED						(0.9*CHASSIS_MAX_OUTPUT_SPEED)
+#define CHASSIS_MAX_OUTPUT_SPEED    (1000.f)
 
 /** 
   * @brief  底盘基本信息定义
@@ -36,13 +37,10 @@ typedef enum
   */ 
 typedef struct chassis_class_t 
 {	
-	
 	chassis_move_direction_e move_dir;
 
 	chassis_base_info_t base_info;
 	
-	void                (*work)(struct chassis_class_t *chassis);
-
 }chassis_t;
 
 
@@ -54,8 +52,5 @@ extern chassis_t chassis;
 
 //总控
 void Chassis_Work(chassis_t *chassis);
-
-
-
 
 #endif

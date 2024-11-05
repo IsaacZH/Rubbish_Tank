@@ -26,7 +26,6 @@ chassis_t chassis =
 {
 	.move_dir = sideways_off,
 
-	.work = Chassis_Work,
 };
 
 /* Function  body --------------------------------------------------------*/
@@ -138,28 +137,11 @@ void Chassis_Work_Mec(chassis_t *chassis)
  */
 void Chassis_Work(chassis_t *chassis)
 {
-//	Chassis_Cmd_Excute(chassis);
-
-//  switch(car.car_move_mode)
-//	{
-//		case offline_CAR:	
-//			chassis->base_info.output_chassisLF = 0;
-//			chassis->base_info.output_chassisRB = 0;
-//			chassis->move_dir = sideways_off;
-//			break;
-//		case init_CAR:
-//      chassis->base_info.target_cycle_speed = 0;
-//      chassis->base_info.target_front_speed = 0;
-//		break;
-//		case mec_CAR:
-//			Chassis_Work_Mec(chassis);
-//			break;
-//			
-//		default:
-//			break;
-//	}
-	
+	/*目标值计算********************* */
 	Chassis_Work_Mec(chassis);
+	
+	/*电机输出********************* */
+	//TODO: 配置好IO口
 	//关控保护
 	if (!RC_ONLINE)
 	{
@@ -191,12 +173,10 @@ void Chassis_Work(chassis_t *chassis)
 			HAL_GPIO_WritePin(DIR2_GPIO_Port,DIR2_Pin,GPIO_PIN_RESET);
 		}
 		//转速控制
-		float l_duty = abs(chassis->base_info.target_chassis_L) / CHASSIS_MAX_SPEED;
-		
+		float l_duty = abs(chassis->base_info.target_chassis_L) / CHASSIS_MAX_OUTPUT_SPEED * 100.f;
+		float r_duty = abs(chassis->base_info.target_chassis_R) / CHASSIS_MAX_OUTPUT_SPEED * 100.f;
+		Set_PWM_DutyCycle(TIM_CHANNEL_1, l_duty);
+		Set_PWM_DutyCycle(TIM_CHANNEL_2, r_duty);
 	}
-
-
-	
-		
 		
 }

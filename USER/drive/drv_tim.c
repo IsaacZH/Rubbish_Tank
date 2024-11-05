@@ -29,6 +29,15 @@ void Set_PWM_DutyCycle(uint32_t channel, float dutyCycle)
 {
 	uint32_t period = 2000 - 1;
 	
+	if (dutyCycle > 100.0f)
+	{
+		dutyCycle = 100.0f;
+	}
+	else if (dutyCycle < 0.0f)
+	{
+		dutyCycle = 0.0f;
+	}
+	
 	// 根据占空比计算比较值
 	uint32_t compareValue = (uint32_t)(period * (dutyCycle / 100.0f));
 	__HAL_TIM_SetCompare(&htim3, channel, compareValue);

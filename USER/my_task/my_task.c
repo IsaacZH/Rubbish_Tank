@@ -3,6 +3,7 @@
 #include "gpio.h"
 #include "drv_tim.h"
 #include "remote.h"
+#include "chassis.h"
 /**
   * @Name    StartControlTask
   * @brief   ¿ØÖÆÈÎÎñ
@@ -23,17 +24,7 @@ void StartControlTask(void const * argument)
 	RC_Init(&rc);				//device.h -> remote.h
   for(;;)
   {
-//		Set_PWM_DutyCycle(TIM_CHANNEL_2, dutyCycle);
-//		HAL_GPIO_WritePin(EN2_GPIO_Port,EN2_Pin,EN2_PinState);
-//		HAL_GPIO_WritePin(DIR2_GPIO_Port,DIR2_Pin,DIR2_PinState);
-		
-		Set_PWM_DutyCycle(TIM_CHANNEL_3, dutyCycle);
-		HAL_GPIO_WritePin(AIN1_GPIO_Port,AIN1_Pin,EN2_PinState);
-		HAL_GPIO_WritePin(AIN2_GPIO_Port,AIN2_Pin,DIR2_PinState);
-
-
 		osDelay(1);
-
   }
 }
 
@@ -50,7 +41,7 @@ void StartRealTimeTask(void const * argument)
   for(;;)
   {
 		rc_ctrl(&rc);
-
+    Chassis_Work(&chassis);
 //		HAL_IWDG_Refresh(&hiwdg);
     osDelay(1);
   }
